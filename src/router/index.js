@@ -1,22 +1,65 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import Dashboard from '@/views/Dashboard';
+import store from '@/store';
 
 Vue.use(VueRouter)
+
+const authGuard = (to, from, next) => {
+  if (store.getters.user) {
+    next()
+  } else {
+    next('/login?loginError=true')
+  }
+}
+
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'dashboard',
+    component: Dashboard
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Auth/Login')
+  },
+  {
+    path: '/registration',
+    name: 'registration',
+    component: () => import('../views/Auth/Registration')
+  },
+  {
+    path: '/shop',
+    name: 'shop',
+    component: () => import('../views/Shop.vue'),
+    beforeEnter: authGuard
+  },
+  {
+    path: '/product/:id',
+    props: true,
+    name: 'product',
+    component: () => import('../components/ProductDetails'),
+    beforeEnter: authGuard
+  },
+  {
+    path: '/promo',
+    name: 'new-promo',
+    component: () => import('../views/NewPromo'),
+    beforeEnter: authGuard
+  },
+  {
+    path: '/basket',
+    name: 'basket',
+    component: () => import('../views/Basket'),
+    beforeEnter: authGuard
+  },
+  {
+    path: '/orders',
+    name: 'orders',
+    component: () => import('../components/User/Orders'),
+    beforeEnter: authGuard
   }
 ]
 
