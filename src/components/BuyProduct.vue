@@ -42,14 +42,12 @@
             <v-card-actions>
               <v-spacer/>
               <v-btn
-                  dark
                   color="error"
                   outlined
                   :disabled="localLoading"
                   @click="onCancel"
               >Close</v-btn>
               <v-btn
-                  dark
                   color="primary"
                   :disabled="localLoading"
                   :loading="localLoading"

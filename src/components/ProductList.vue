@@ -5,8 +5,8 @@
       <v-col xs="12" sm="6">
         <div
             class="elevation-10 mb-10"
-            v-for="(product, i) in products"
-            :key="i"
+            v-for="product in products"
+            :key="product.id"
         >
           <v-row class="">
             <v-col md="4">

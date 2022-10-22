@@ -22,13 +22,39 @@
          {{link.title}}</v-btn>
      </div>
       <div v-if="isAuth">
-        <v-btn
-            color="deep-purple accent-2"
-            class="mr-3"
-            @click="onLogout"
+        <v-menu
+            top
+            :close-on-click="closeOnClick"
+            min-width="200"
         >
-          <v-icon>mdi-logout-variant</v-icon>
-          Logout</v-btn>
+          <template v-slot:activator="{ on, attrs }">
+            <v-avatar
+                v-bind="attrs"
+                v-on="on">
+              <img
+                  src="https://cdn.vuetifyjs.com/images/john.jpg"
+                  alt="John"
+              >
+            </v-avatar>
+          </template>
+
+          <v-list>
+            <v-list-item
+                v-for="accountLink in accountLink" :key="accountLink.id" :to="accountLink.path"
+            >
+              <v-icon>{{accountLink.icon}}</v-icon>
+              <v-list-item-title class="ml-3">{{ accountLink.title }}</v-list-item-title>
+            </v-list-item>
+            <v-btn
+                outlined
+                class="mr-3"
+                @click="onLogout"
+                style="border: none; margin-top: 30px"
+            >
+              <v-icon>mdi-logout-variant</v-icon>
+              Logout</v-btn>
+          </v-list>
+        </v-menu>
       </div>
     </v-app-bar>
 
@@ -46,14 +72,29 @@
             v-model="group"
             active-class="deep-purple--text text--accent-4"
         >
+        <div>
+          <v-avatar>
+            <img
+                src="https://cdn.vuetifyjs.com/images/john.jpg"
+                alt="John"
+            >
+          </v-avatar>
+            User Name
+        </div>
+
           <v-list-item v-for="(link, i) in links" :key="i" :to="link.path">
             <v-list-item-icon>
               <v-icon>{{link.icon}}</v-icon>
             </v-list-item-icon>
             <v-list-item-title>{{link.title}}</v-list-item-title>
           </v-list-item>
-
-          <v-list-item @click="onLogout" v-if="isAuth">
+          <v-list-item v-for="accountLink in accountLink" :key="accountLink.id" :to="accountLink.path">
+            <v-list-item-icon>
+              <v-icon>{{accountLink.icon}}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{accountLink.title}}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="onLogout" v-if="isAuth" class="mt-15">
             <v-list-item-icon>
               <v-icon>mdi-logout-variant</v-icon>
             </v-list-item-icon>
@@ -70,6 +111,13 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
+    closeOnClick: true,
+    accountLink: [
+      {id: 'orders', title: 'My Orders', icon: 'mdi-list-box-outline', path: '/orders'},
+      {id: 'promo', title: 'My Promo', icon: 'mdi-shopping-search-outline', path: '/shop'},
+      {id: 'newPromo', title: 'New Promo', icon: 'mdi-list-box-outline', path: '/promo'},
+      {id: 'settings', title: 'Settings', icon: 'mdi-list-box-outline', path: '/settings'},
+    ]
   }),
   methods: {
     onLogout () {
@@ -86,10 +134,9 @@ export default {
     links () {
       if (this.isAuth) {
         return [
-          {title: 'My Promo', icon: 'mdi-shopping-search-outline', path: '/shop'},
-          {title: 'New Promo', icon: 'mdi-list-box-outline', path: '/promo'},
+          {title: 'Shop', icon: 'mdi-shopping-search-outline', path: '/'},
+          {title: 'Massage', icon: 'mdi-email-outline', path: '/massage'},
           {title: 'Basket', icon: 'mdi-cart-outline', path: '/basket'},
-          {title: 'Orders', icon: 'mdi-list-box-outline', path: '/orders'}
         ]
       }
       return [
@@ -102,9 +149,9 @@ export default {
 </script>
 
 <style scoped>
-.logo {
-  text-decoration: none;
-  color: white;
-}
+  .logo {
+    text-decoration: none;
+    color: white;
+  }
 
 </style>
