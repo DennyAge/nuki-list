@@ -60,6 +60,12 @@ const routes = [
     name: 'orders',
     component: () => import('../components/User/Orders'),
     beforeEnter: authGuard
+  },
+  {
+    path: '/settings',
+    name: 'settings',
+    component: () => import('../views/Settings'),
+    beforeEnter: authGuard
   }
 ]
 
